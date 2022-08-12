@@ -2,10 +2,9 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { hashCheck } from 'common/util';
 import { UserService } from 'modules/user/user.service';
-import { LoginDto } from './dto/login.dto';
+import { LoginRequest } from './dto/login.dto';
 import { ILoginResponse } from './interfaces/login.response';
 import { IJwtPayload } from './interfaces/jwt-payload';
-import { RegisterDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
@@ -14,11 +13,11 @@ export class AuthService {
         private jwtService: JwtService
     ) {}
 
-    async login(data: LoginDto): Promise<ILoginResponse> {
-        const { email, password } = data;
+    async login(data: LoginRequest): Promise<ILoginResponse> {
+        const { username, password } = data;
         const user = await this.userService.findByColumns({
-            column: 'email',
-            value: email
+            column: 'username',
+            value: username
         });
 
         if (!user) throw new BadRequestException('invalid credential');
@@ -28,16 +27,10 @@ export class AuthService {
         if (!isValidCredential)
             throw new BadRequestException('invalid credential');
 
-        const payload: IJwtPayload = { id: user.id, email: user.email };
+        const payload: IJwtPayload = { id: user.id, username: user.username };
 
         const accessToken = this.jwtService.sign(payload);
 
         return { accessToken };
-    }
-
-    async register(data: RegisterDto): Promise<object> {
-        this.userService.store(data);
-
-        return {};
     }
 }

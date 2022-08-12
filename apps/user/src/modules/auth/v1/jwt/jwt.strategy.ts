@@ -17,7 +17,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(payload: IJwtPayload): Promise<User> {
-        const { id, email } = payload;
+        const { id, username } = payload;
 
         const user = await this.userService.findByColumns(
             {
@@ -25,8 +25,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
                 value: id
             },
             {
-                column: 'email',
-                value: email
+                column: 'username',
+                value: username
             }
         );
 
