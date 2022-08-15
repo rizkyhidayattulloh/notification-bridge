@@ -7,7 +7,6 @@ import { Job } from 'bull';
 import { now } from 'common/util';
 import { Repository } from 'typeorm';
 import { NotificationLog } from './notification-log.entity';
-import { NotificationLogService } from './notification-log.service';
 
 @Processor({ name: 'notificationLog' })
 export class NotificationLogProcessor {
