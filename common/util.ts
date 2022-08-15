@@ -1,4 +1,5 @@
 import * as bcrypt from 'bcrypt';
+import * as moment from 'moment';
 
 export function hash(plainText: string): string {
     return bcrypt.hashSync(plainText, 10);
@@ -20,4 +21,8 @@ export function rand(min: number, max: number) {
     max = Math.floor(max);
 
     return Math.floor(Math.random() * (max - min) + min);
+}
+
+export function now(): string {
+    return moment().format('YYYY-MM-DD H:mm:ss');
 }

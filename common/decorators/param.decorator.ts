@@ -2,14 +2,17 @@ import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { Request } from 'express';
 
 export const AddParamToBody = createParamDecorator(
-    (args: IAddParamsToBodyArgs, ctx: ExecutionContext) => {
+    (args: IAddParamsToBodyArgs[], ctx: ExecutionContext) => {
         const request = ctx.switchToHttp().getRequest<Request>();
-        const { name } = args;
-        const value = Object.is(NaN, parseInt(args.value()))
-            ? args.value()
-            : parseInt(args.value());
 
-        request.body[name] = value;
+        args.map((arg) => {
+            const { name } = arg;
+            const value = Object.is(NaN, parseInt(arg.value()))
+                ? arg.value()
+                : parseInt(arg.value());
+
+            request.body[name] = value;
+        });
 
         return request;
     }

@@ -16,7 +16,7 @@ export class UnprocessableEntityExceptionFilter implements ExceptionFilter {
 
         response.status(status).json({
             statusCode: status,
-            error: 'Bad Request Exception',
+            error: 'Unprocessable Entity Exception',
             messages: this.serializeMessage(messages)
         });
     }
